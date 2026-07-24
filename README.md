@@ -28,7 +28,7 @@ cmake --build build
 **Run**
 
 ```bash
-./build/TicTacToe
+./build/DinoGame
 ```
 
 If you are building for the first time, CMake will fetch `raylib` during the configure step.
