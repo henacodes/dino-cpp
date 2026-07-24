@@ -1,0 +1,12 @@
+# Build directory & IDE configs
+build
+bin/
+.vscode/
+.idea/
+*.user
+
+# Compiled binaries & objects
+*.o
+*.obj
+*.exe
+DinoGame
