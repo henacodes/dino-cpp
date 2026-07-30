@@ -8,8 +8,8 @@ namespace components::graphics
         position = pos;
         tag = "Sprite";
 
-        // Default sourceRect spans the full texture width and height
-        sourceRect = Rectangle{
+        // Default to the full texture dimensions
+        source_rect = Rectangle{
             0.0f,
             0.0f,
             static_cast<float>(texture.width),
@@ -18,27 +18,24 @@ namespace components::graphics
 
     void Sprite::Update(float delta)
     {
-        // Translate position based on current velocity
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
     }
 
     void Sprite::Paint()
     {
-        // Guard against uninitialized GPU textures
         if (texture.id == 0)
             return;
 
-        // Map the source portion to screen destination space
-        Rectangle destRect{
+        Rectangle dest_rect{
             position.x,
             position.y,
-            sourceRect.width * scale.x,
-            sourceRect.height * scale.y};
+            source_rect.width * scale.x,
+            source_rect.height * scale.y};
 
-        Vector2 origin{0.0f, 0.0f}; // Rotation origin relative to top-left
+        Vector2 origin{0.0f, 0.0f};
 
-        DrawTexturePro(texture, sourceRect, destRect, origin, rotation.x, tint);
+        DrawTexturePro(texture, source_rect, dest_rect, origin, rotation.x, tint);
     }
 
     Rectangle Sprite::GetBounds() const
@@ -46,7 +43,7 @@ namespace components::graphics
         return Rectangle{
             position.x,
             position.y,
-            sourceRect.width * scale.x,
-            sourceRect.height * scale.y};
+            source_rect.width * scale.x,
+            source_rect.height * scale.y};
     }
 }

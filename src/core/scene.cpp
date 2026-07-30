@@ -36,6 +36,7 @@ namespace core
             }
             pending_additions.clear();
         }
+        Clean();
     }
 
     void Scene::Paint()
