@@ -1,4 +1,4 @@
-#include "scene.hpp"
+#include "core/scene.hpp"
 #include <vector>
 
 namespace core
