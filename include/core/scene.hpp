@@ -33,5 +33,9 @@ namespace core
             }
         }
         bool CheckCollision(const SceneObject &obj1, const SceneObject &obj2);
+        void SetGravity(float val)
+        {
+            gravity = val;
+        }
     };
 }

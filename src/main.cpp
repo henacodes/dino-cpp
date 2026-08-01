@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "core/scene.hpp"
 #include "entities/dino.hpp"
+#include "entities/ground.hpp"
 #include "components/graphics/sprite.hpp"
 
 int main()
@@ -13,18 +14,10 @@ int main()
     core::Scene scene{};
 
     scene.Add(std::make_unique<entities::Dino>(sheet, Vector2{100.0f, 100.0f}));
-
-    // 2. Create and add the static ground
-    auto ground = std::make_unique<components::graphics::Sprite>(sheet, Vector2{0.0f, 300.0f});
-    ground->SetSourceRect(Rectangle{
-        2.0f,
-        104.0f,
-        static_cast<float>(sheet.width),
-        24.0f});
-
-    scene.Add(std::move(ground));
+    scene.Add(std::make_unique<entities::Ground>(sheet, Vector2{0.0f, 300.0f}));
 
     scene.gravity_on = true;
+    scene.SetGravity(15);
 
     while (!WindowShouldClose())
     {
