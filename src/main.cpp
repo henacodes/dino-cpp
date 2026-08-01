@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "core/scene.hpp"
-#include "components/graphics/animated_sprite.hpp"
+#include "entities/dino.hpp"
+#include "components/graphics/sprite.hpp"
 
 int main()
 {
@@ -11,38 +12,25 @@ int main()
 
     core::Scene scene{};
 
-    // Build the sprite component
-    auto dino = std::make_unique<components::graphics::AnimatedSprite>(sheet, Vector2{100.0f, 200.0f});
-    dino->toggleRigidBody();
-    components::graphics::AnimationClip run_clip{
-        .name = "run",
-        .frames = {
-            Rectangle{1854.0f, 2.0f, 88.0f, 94.0f},
-            Rectangle{1942.0f, 2.0f, 88.0f, 94.0f}},
-        .frame_duration = 0.1f,
-        .loop = true};
+    scene.Add(std::make_unique<entities::Dino>(sheet, Vector2{100.0f, 100.0f}));
 
-    dino->AddAnimation("run", run_clip);
-    dino->Play("run");
-    dino->SetScale(Vector2{0.5f, 0.5f});
-
-    auto ground = std::make_unique<components::graphics::Sprite>(sheet, Vector2{0.0f, 250.0f});
+    // 2. Create and add the static ground
+    auto ground = std::make_unique<components::graphics::Sprite>(sheet, Vector2{0.0f, 300.0f});
     ground->SetSourceRect(Rectangle{
         2.0f,
         104.0f,
-        (float)sheet.width,
+        static_cast<float>(sheet.width),
         24.0f});
-    // ground->SetSize(64.0f, 64.0f);
 
-    // Add to scene queue
-    scene.Add(std::move(dino));
     scene.Add(std::move(ground));
 
     scene.gravity_on = true;
+
     while (!WindowShouldClose())
     {
         float delta = GetFrameTime();
 
+        // Dino::Update handles input, physics, and animation automatically
         scene.Update(delta);
 
         BeginDrawing();

@@ -3,14 +3,6 @@
 
 namespace core
 {
-    void Scene::Add(std::unique_ptr<SceneObject> obj)
-    {
-        if (obj != nullptr)
-        {
-            // Stage additions instead of pushing directly to scene_objects
-            pending_additions.push_back(std::move(obj));
-        }
-    }
 
     void Scene::Update(float delta)
     {
