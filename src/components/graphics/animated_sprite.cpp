@@ -80,4 +80,5 @@ namespace components::graphics
             source_rect = clip.frames[current_frame_index];
         }
     }
+
 }

@@ -15,6 +15,8 @@ namespace core
         std::string tag{"Default"};
         bool pendingDestroy{false};
 
+        bool is_rigid_body = false;
+
     public:
         virtual ~SceneObject() = default;
 
@@ -39,5 +41,13 @@ namespace core
 
         std::string GetTag() const { return tag; }
         void SetTag(const std::string &newTag) { tag = newTag; }
+
+        bool isRigidBody() const { return is_rigid_body; }
+        void toggleRigidBody() { is_rigid_body = !is_rigid_body; }
+
+        virtual Rectangle GetBounds() const = 0;
+
+        // called everytime an object comes in contact with another object
+        virtual void OnCollision(SceneObject &other) {}
     };
 }

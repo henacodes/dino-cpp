@@ -26,5 +26,8 @@ namespace components::graphics
         void SetSourceRect(Rectangle rect) { source_rect = rect; }
         void SetScale(Vector2 s) { scale = s; }
         void SetTint(Color c) { tint = c; }
+        void SetSize(float width, float height);
+
+        void OnCollision(core::SceneObject &other) override;
     };
 }

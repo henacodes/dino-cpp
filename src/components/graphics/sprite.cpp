@@ -21,6 +21,14 @@ namespace components::graphics
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
     }
+    void Sprite::SetSize(float width, float height)
+    {
+        if (source_rect.width > 0.0f && source_rect.height > 0.0f)
+        {
+            scale.x = width / source_rect.width;
+            scale.y = height / source_rect.height;
+        }
+    }
 
     void Sprite::Paint()
     {
@@ -46,4 +54,32 @@ namespace components::graphics
             source_rect.width * scale.x,
             source_rect.height * scale.y};
     }
+
+    void Sprite::OnCollision(core::SceneObject &other)
+    {
+        if (!is_rigid_body)
+            return;
+
+        Rectangle my_bounds = GetBounds();
+        Rectangle other_bounds = other.GetBounds();
+        Rectangle overlap = GetCollisionRec(my_bounds, other_bounds);
+
+        if (overlap.width < overlap.height)
+        {
+            if (my_bounds.x < other_bounds.x)
+                position.x -= overlap.width;
+            else
+                position.x += overlap.width;
+            velocity.x = 0.0f;
+        }
+        else
+        {
+            if (my_bounds.y < other_bounds.y)
+                position.y -= overlap.height;
+            else
+                position.y += overlap.height;
+            velocity.y = 0.0f;
+        }
+    }
+
 }
