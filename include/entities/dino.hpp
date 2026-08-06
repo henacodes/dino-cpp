@@ -7,7 +7,7 @@ namespace entities
     {
     private:
         bool is_grounded;
-        float jump_force{-350.0f};
+        float jump_force{-400.0f};
 
     public:
         Dino(Texture2D tex, Vector2 pos);

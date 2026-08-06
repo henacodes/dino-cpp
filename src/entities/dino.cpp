@@ -18,7 +18,7 @@ namespace entities
 
         AddAnimation("run", run_clip);
         Play("run");
-        SetScale(Vector2{0.5f, 0.5f});
+        // SetScale(Vector2{0.5f, 0.5f});
     }
 
     void Dino::Update(float delta)
@@ -47,4 +47,5 @@ namespace entities
             is_grounded = true;
         }
     }
+
 }
