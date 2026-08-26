@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "core/scene.hpp"
 #include "components/graphics/animated_sprite.hpp"
+#include "ground.hpp"
 
 int main()
 {
@@ -10,6 +11,7 @@ int main()
     Texture2D sheet = LoadTexture("assets/textures/dino.png");
 
     core::Scene scene;
+    scene.Add(std::make_unique<Ground>());
 
     // Build the sprite component
     auto dino = std::make_unique<components::graphics::AnimatedSprite>(sheet, Vector2{100.0f, 200.0f});
