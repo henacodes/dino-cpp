@@ -1,35 +1,38 @@
 #include "raylib.h"
 #include "core/scene.hpp"
-#include "components/graphics/animated_sprite.hpp"
-#include "ground.hpp"
+#include "entities/dino.hpp"
+#include "entities/ground.hpp"
+#include "entities/cactus.hpp"
+#include "components/graphics/sprite.hpp"
+#include <string>
+#include <memory>
 
 int main()
 {
-    InitWindow(800, 450, "Dino Game");
+    const int screen_width = 1280;
+    const int screen_height = 600;
+
+    InitWindow(screen_width, screen_height, "Dino Game");
     SetTargetFPS(60);
 
     Texture2D sheet = LoadTexture("assets/textures/dino.png");
 
-    core::Scene scene;
-    scene.Add(std::make_unique<Ground>());
+    float ground_y = 300.0f;
+    core::Scene scene{};
 
-    // Build the sprite component
-    auto dino = std::make_unique<components::graphics::AnimatedSprite>(sheet, Vector2{100.0f, 200.0f});
+    // Player & Ground Setup
+    scene.Add(std::make_unique<entities::Dino>(sheet, Vector2{100.0f, 100.0f}));
+    scene.Add(std::make_unique<entities::Ground>(sheet, Vector2{0.0f, ground_y}));
 
-    // running animation clip
-    components::graphics::AnimationClip run_clip{
-        .name = "run",
-        .frames = {
-            Rectangle{1854.0f, 2.0f, 88.0f, 94.0f},
-            Rectangle{1942.0f, 2.0f, 88.0f, 94.0f}},
-        .frame_duration = 0.1f,
-        .loop = true};
+    scene.gravity_on = true;
+    scene.SetGravity(15);
 
-    dino->AddAnimation("run", run_clip);
-    dino->Play("run");
+    int counter = 0;
+    float timer = 0.0f;
+    float interval = 0.1f;
 
-    // Add to scene queue
-    scene.Add(std::move(dino));
+    float spawn_timer = 0.0f;
+    float spawn_interval = 2.0f;
 
     while (!WindowShouldClose())
     {
@@ -37,10 +40,31 @@ int main()
 
         scene.Update(delta);
 
+        // Counter accumulator
+        timer += delta;
+        if (timer >= interval)
+        {
+            counter += 1;
+            timer -= interval;
+        }
+
+        // Obstacle Spawner Loop
+        spawn_timer += delta;
+        if (spawn_timer >= spawn_interval)
+        {
+            spawn_timer = 0.0f;
+            spawn_interval = static_cast<float>(GetRandomValue(15, 30)) / 10.0f;
+
+            scene.Add(std::make_unique<entities::Cactus>(
+                sheet,
+                Vector2{static_cast<float>(screen_width), ground_y - 94.0f}));
+        }
+
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
         scene.Paint();
+        DrawText(std::to_string(counter).c_str(), 1100, 30, 30, DARKGRAY);
 
         EndDrawing();
     }
