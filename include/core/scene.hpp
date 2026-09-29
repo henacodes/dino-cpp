@@ -21,6 +21,7 @@ namespace core
         void Update(float delta);
         void Paint();
         void Clean();
+        void Clear();
 
         template <typename T>
         void Add(std::unique_ptr<T> obj)

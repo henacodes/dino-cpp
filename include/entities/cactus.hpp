@@ -20,5 +20,6 @@ namespace entities
         Cactus(Texture2D tex, Vector2 pos, float speed = 300.0f);
 
         void Update(float delta) override;
+        Rectangle GetBounds() const override;
     };
 }

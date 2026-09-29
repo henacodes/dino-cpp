@@ -64,6 +64,12 @@ namespace core
         }
     }
 
+    void Scene::Clear()
+    {
+        scene_objects.clear();
+        pending_additions.clear();
+    }
+
     void Scene::Clean()
     {
         std::erase_if(scene_objects, [](const std::unique_ptr<SceneObject> &obj)

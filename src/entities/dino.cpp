@@ -2,8 +2,9 @@
 
 namespace entities
 {
-    Dino::Dino(Texture2D tex, Vector2 pos)
+    Dino::Dino(Texture2D tex, Vector2 pos, bool *game_over_flag)
         : AnimatedSprite(tex, pos)
+        , game_over(game_over_flag)
     {
         tag = "AnimatedSprite:Dino";
         is_rigid_body = true;
@@ -21,6 +22,21 @@ namespace entities
         // SetScale(Vector2{0.5f, 0.5f});
     }
 
+    void Dino::OnSpawn()
+    {
+        is_grounded = true;
+    }
+
+    Rectangle Dino::GetBounds() const
+    {
+        Rectangle bounds = AnimatedSprite::GetBounds();
+        bounds.x += bounds.width * 0.18f;
+        bounds.y += bounds.height * 0.10f;
+        bounds.width *= 0.58f;
+        bounds.height *= 0.82f;
+        return bounds;
+    }
+
     void Dino::Update(float delta)
     {
         if (IsKeyPressed(KEY_SPACE) && is_grounded)
@@ -34,18 +50,22 @@ namespace entities
 
     void Dino::OnCollision(core::SceneObject &other)
     {
-        // First let base Sprite handle positional pushback
-        Sprite::OnCollision(other);
-
-        // Evaluate grounded state based on collision orientation
         Rectangle my_bounds = GetBounds();
         Rectangle other_bounds = other.GetBounds();
         Rectangle overlap = GetCollisionRec(my_bounds, other_bounds);
 
-        if (overlap.width >= overlap.height && my_bounds.y < other_bounds.y)
+        if (other.GetTag() == "Obstacle" && game_over != nullptr)
+        {
+            *game_over = true;
+        }
+
+        if (other.GetTag() == "Ground" && overlap.width >= overlap.height && my_bounds.y < other_bounds.y)
         {
             is_grounded = true;
         }
+
+        // Let base Sprite handle positional pushback after we inspect the overlap.
+        Sprite::OnCollision(other);
     }
 
 }

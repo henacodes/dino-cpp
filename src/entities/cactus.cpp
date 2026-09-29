@@ -36,4 +36,14 @@ namespace entities
             pendingDestroy = true;
         }
     }
+
+    Rectangle Cactus::GetBounds() const
+    {
+        Rectangle bounds = Sprite::GetBounds();
+        bounds.x += bounds.width * 0.22f;
+        bounds.y += bounds.height * 0.10f;
+        bounds.width *= 0.56f;
+        bounds.height *= 0.84f;
+        return bounds;
+    }
 }
